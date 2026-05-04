@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: pgsql-counter-test
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: test_migration
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./test-data.sql:/docker-entrypoint-initdb.d/02-test-data.sql
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U testuser -d test_migration" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test-network
+
+volumes:
+  postgres_data:
+
+networks:
+  test-network:
+    driver: bridge

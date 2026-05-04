@@ -1,0 +1,49 @@
+.copilot-specs-cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Migration files
+pre_migration_count.json
+post_migration_count.json
+migration_report.html
+migration_report.csv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config with credentials
+.migration_config.json
+
+# Reports directory (optional - customize as needed)
+# reports/
