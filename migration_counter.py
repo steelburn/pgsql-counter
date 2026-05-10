@@ -18,7 +18,20 @@ import os
 from datetime import datetime
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import logging
 
+# Configure logging
+logging.basicConfig(
+    filename="sql_queries.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(message)s",
+)
+
+logging.basicConfig(
+    filename="sql_results.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(message)s",
+)
 
 try:
     import psycopg2
@@ -166,11 +179,14 @@ class PostgreSQLCounter:
                 sql.Identifier(schema),
                 sql.Identifier(table_name),
             )
+            logging.info(f"Executing query: {query.as_string(self.conn)}")
             cursor.execute(query)
             count = cursor.fetchone()[0]
+            logging.info(f"Query result for {schema}.{table_name}: {count}")
             cursor.close()
             return (f"{schema}.{table_name}", count)
         except psycopg2.Error as e:
+            logging.error(f"Error executing query for {schema}.{table_name}: {e}")
             print(f"Error counting records in {schema}.{table_name}: {e}", file=sys.stderr)
             return None
 
